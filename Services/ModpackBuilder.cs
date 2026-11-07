@@ -47,6 +47,8 @@ public static class ModpackBuilder
             desc = simpleDescription ?? $"Custom Preset #{presetId}";
         }
         const string modpackTitle = "Custom FOV";
+        const string authorDisplayName = "FOV Modpack Builder";
+        const string authorActionLink = "https://github.com/avoidmemories/GTA-5-FOV-Modpack-Builder";
         var outPath = UniquePath(Path.Combine(appDir, fileName + extension));
         using (var src = ZipFile.OpenRead(Path.Combine(appDir, "Assets", "Templates", "oiv_template.zip")))
         using (var outZip = new ZipArchive(File.Create(outPath), ZipArchiveMode.Create))
@@ -60,6 +62,14 @@ public static class ModpackBuilder
                     using var rs = new StreamReader(entry.Open(), Encoding.UTF8);
                     var xml = rs.ReadToEnd();
                     xml = xml.Replace(">TEST FOV<", $">{modpackTitle}<");
+                    xml = Regex.Replace(xml,
+                        "<displayName>.*?</displayName>",
+                        $"<displayName>{authorDisplayName}</displayName>",
+                        RegexOptions.Singleline);
+                    xml = Regex.Replace(xml,
+                        "<actionLink>.*?</actionLink>",
+                        $"<actionLink>{authorActionLink}</actionLink>",
+                        RegexOptions.Singleline);
                     // black modpack card
                     xml = xml.Replace("$FF465FAF", "$FF000000");
                     // The card itself is black, so its title must remain white.
