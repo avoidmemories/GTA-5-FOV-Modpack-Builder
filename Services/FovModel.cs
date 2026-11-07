@@ -130,6 +130,12 @@ public static class FovModel
         { ("camFollowParachuteCameraMetadata", "BaseFov"), ("Parachute / freefall", "tp") },
 
         { ("camFollowVehicleCameraMetadata", "BaseFov"), ("In vehicle — third person (follow)", "veh") },
+        { ("camFollowVehicleCameraMetadata", "MinSafeOrbitDistanceScalingForExtensions"), ("Safe distance scale", "distance") },
+        { ("camFollowVehicleCameraMetadata", "CustomOrbitDistanceLimitsToForce_Min"), ("Forced distance — min", "distance") },
+        { ("camFollowVehicleCameraMetadata", "CustomOrbitDistanceLimitsToForce_Max"), ("Forced distance — max", "distance") },
+        { ("camFollowVehicleCameraMetadata", "OrbitDistanceLimitSpringConstant"), ("Distance limit smoothing", "distance") },
+        { ("camFollowVehicleCameraMetadata", "OrbitDistanceLimitsForBasePosition_Min"), ("Base distance — min", "distance") },
+        { ("camFollowVehicleCameraMetadata", "OrbitDistanceLimitsForBasePosition_Max"), ("Base distance — max", "distance") },
         { ("camCinematicMountedPartCameraMetadata", "BaseFov"), ("Mounted-part camera", "veh") },
         { ("camThirdPersonVehicleAimCameraMetadata", "BaseFov"), ("Driveby aim — from vehicle TP", "veh") },
         { ("camThirdPersonVehicleAimCameraMetadata", "BaseFovToEmulateWithFocalLengthMultiplier"), ("Driveby focal emulation", "veh") },
@@ -205,6 +211,7 @@ public static class FovModel
         ("dyn", "FOV DYNAMICS (scaling, speeds)"),
         ("blur", "ZOOM MOTION BLUR"),
         ("misc", "SPLINE / MISC"),
+        ("distance", "VEHICLE CAMERA DISTANCE"),
     };
 
     /// <summary>Long-form help shown on hover. Labels stay compact so rows do
@@ -233,6 +240,18 @@ public static class FovModel
             "Base field of view for the ordinary third-person on-foot follow camera.",
         ("camFollowVehicleCameraMetadata", "BaseFov") =>
             "Base field of view for the ordinary third-person vehicle follow camera.",
+        ("camFollowVehicleCameraMetadata", "MinSafeOrbitDistanceScalingForExtensions") =>
+            "Scale used when calculating the minimum safe camera distance around vehicle extensions, trailers, and unusual bodywork. It can make the camera keep a larger clearance from the vehicle.",
+        ("camFollowVehicleCameraMetadata", "CustomOrbitDistanceLimitsToForce_Min") =>
+            "Lower endpoint of the forced vehicle-camera distance range. The original value is -1, which means no custom range is forced. Set this together with Forced distance — max.",
+        ("camFollowVehicleCameraMetadata", "CustomOrbitDistanceLimitsToForce_Max") =>
+            "Upper endpoint of the forced vehicle-camera distance range. The original value is -1, which means no custom range is forced. A larger value can keep the camera farther from the vehicle.",
+        ("camFollowVehicleCameraMetadata", "OrbitDistanceLimitSpringConstant") =>
+            "How firmly and quickly the camera moves toward its permitted distance. This changes smoothing, not the maximum distance by itself.",
+        ("camFollowVehicleCameraMetadata", "OrbitDistanceLimitsForBasePosition_Min") =>
+            "Minimum normal orbit distance from the vehicle. This is one endpoint of the standard vehicle-camera distance range.",
+        ("camFollowVehicleCameraMetadata", "OrbitDistanceLimitsForBasePosition_Max") =>
+            "Maximum normal orbit distance from the vehicle. Increase this to allow the third-person camera to move farther back.",
         ("camFollowParachuteCameraMetadata", "BaseFov") =>
             "Base field of view for the parachute and freefall follow-camera profiles.",
         ("camThirdPersonPedAimCameraMetadata", "BaseFov") =>
@@ -364,10 +383,15 @@ public static class FovModel
                 if (!Labels.TryGetValue((entry.Type, f.Name), out var lab))
                     continue;
                 var dkey = entry.Type + "|" + f.Name;
-                if (!defaultsDoc.TryGetValue(dkey, out var defs) || defs is null)
-                    continue;
-                if (defs.Count != entry.Count)
-                    continue;
+                if (!defaultsDoc.TryGetValue(dkey, out var defs) || defs is null || defs.Count != entry.Count)
+                {
+                    // Some non-FOV fields are intentionally not listed in the
+                    // hand-maintained defaults file. Their pristine values are
+                    // read directly from cameras_original.ymt instead.
+                    defs = Enumerable.Range(0, entry.Count)
+                        .Select(i => ReadBeF32(ymt, entry.Off + i * entry.Stride + f.Off))
+                        .ToList();
+                }
                 result.Add(new FovParam
                 {
                     Type = entry.Type, Field = f.Name,

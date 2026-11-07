@@ -146,3 +146,16 @@ General rule: a `wide FOV` is a wider, less zoomed-in shot; a `close FOV` is a c
 | FP head track: blur threshold (min) | `camFirstPersonHeadTrackingAimCameraMetadata / ZoomMotionBlurMinFovDelta` | Lower blur threshold while changing the head-tracking aim-camera FOV. |
 | FP head track: blur threshold (max) | `camFirstPersonHeadTrackingAimCameraMetadata / ZoomMotionBlurMaxFovDelta` | Upper blur threshold while changing the head-tracking aim-camera FOV. |
 | FP head track: max blur strength | `camFirstPersonHeadTrackingAimCameraMetadata / ZoomMotionBlurMaxStrengthForFov` | Maximum blur strength for the head-tracking aim camera. |
+
+### Vehicle camera distance
+
+`Forced distance` and `Base distance` are ranges, so each has separate minimum and maximum controls. Keep each minimum less than or equal to its corresponding maximum. The original `Forced distance` values are `-1`; this means that no custom range is forced.
+
+| Name in the app | Type / field | Description |
+|---|---|---|
+| Safe distance scale | `camFollowVehicleCameraMetadata / MinSafeOrbitDistanceScalingForExtensions` | Scales the minimum safe camera distance around vehicle extensions, trailers, and unusual bodywork. |
+| Forced distance — min | `camFollowVehicleCameraMetadata / CustomOrbitDistanceLimitsToForce` (minimum) | Lower endpoint of a custom forced distance range. Set together with its maximum. |
+| Forced distance — max | `camFollowVehicleCameraMetadata / CustomOrbitDistanceLimitsToForce` (maximum) | Upper endpoint of a custom forced distance range. A larger value can keep the camera farther from the vehicle. |
+| Distance limit smoothing | `camFollowVehicleCameraMetadata / OrbitDistanceLimitSpringConstant` | Controls how firmly and quickly the camera moves toward its permitted distance; it does not increase the distance by itself. |
+| Base distance — min | `camFollowVehicleCameraMetadata / OrbitDistanceLimitsForBasePosition` (minimum) | Minimum normal orbit distance from the vehicle. |
+| Base distance — max | `camFollowVehicleCameraMetadata / OrbitDistanceLimitsForBasePosition` (maximum) | Maximum normal orbit distance from the vehicle. Increase this to allow the third-person camera to move farther back. |
