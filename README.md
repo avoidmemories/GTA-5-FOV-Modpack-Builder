@@ -15,7 +15,7 @@ A desktop application for building GTA 5 OIV modpacks that modify camera paramet
 
 > **First-person FOV note:** For the modded first-person FOV to take effect, lower GTA V's in-game FOV slider below 100% (or set it to the minimum): `Esc → Settings → Camera → First Person On Foot Field of View`.
 
-https://github.com/user-attachments/assets/69b72fd0-4080-49b6-9aca-a4f0e96706e3
+https://github.com/user-attachments/assets/db1b1458-77e9-48eb-9e42-e6acc9817502
 
 ## Build
 
