@@ -10,6 +10,7 @@ A desktop application for building GTA 5 OIV modpacks that modify camera paramet
 - Yellow highlighting for values that differ from the imported baseline.
 - Undo / Redo: `Ctrl+Z` and `Ctrl+Shift+Z`.
 - Export as OIV, ZIP, or `cameras.ymt` only.
+- `Build original` creates an `Original FOV.oiv` modpack from the untouched reference `cameras.ymt`.
 - After a build, the `Open folder` button opens the folder containing the created modpack.
 - Hovering over a parameter name shows its exact metadata type and a detailed description; clicking copies only the type to the clipboard.
 

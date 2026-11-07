@@ -192,6 +192,11 @@
                                             Height="24" HorizontalAlignment="Stretch"
                                             HorizontalContentAlignment="Left"
                                             Margin="10,1" Click="BtnBuildZip_Click" />
+                                    <Button x:Name="BtnBuildOriginal" Content="Build original"
+                                            Style="{StaticResource FlyoutItem}"
+                                            Height="24" HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Left"
+                                            Margin="10,1" Click="BtnBuildOriginal_Click" />
                                 </StackPanel>
                             </Border>
                         </Popup>

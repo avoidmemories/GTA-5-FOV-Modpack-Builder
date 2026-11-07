@@ -12,7 +12,9 @@ namespace FovApp.Services;
 public static class ModpackBuilder
 {
     public static string Build(List<FovParam> parameters, string ymtFileName, out float firstFpValue,
-        string extension = ".oiv", string? simpleDescription = null, string? simpleNameSuffix = null)
+        string extension = ".oiv", string? simpleDescription = null, string? simpleNameSuffix = null,
+        string? outputName = null, string? modpackTitle = null, bool omitDescription = false,
+        bool updateChecksum = true)
     {
         var appDir = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -25,7 +27,8 @@ public static class ModpackBuilder
                 FovModel.WriteBeF32(data, p.Offsets[i], vals[i]);
         }
 
-        PsoChecksum.Update(data);
+        if (updateChecksum)
+            PsoChecksum.Update(data);
 
         var fp = parameters.FirstOrDefault(x => x.Group == "fp" && x.Field == "BaseFov" && x.Type == "camFirstPersonPedAimCameraMetadata")
             ?? parameters.FirstOrDefault(x => x.Group == "fp");
@@ -35,7 +38,12 @@ public static class ModpackBuilder
         // ADVANCED generates one ID and reuses that exact ID in both places.
         string desc;
         string fileName;
-        if (!string.IsNullOrWhiteSpace(simpleNameSuffix))
+        if (!string.IsNullOrWhiteSpace(outputName))
+        {
+            fileName = outputName;
+            desc = simpleDescription ?? string.Empty;
+        }
+        else if (!string.IsNullOrWhiteSpace(simpleNameSuffix))
         {
             fileName = $"Custom FOV {simpleNameSuffix}";
             desc = simpleDescription ?? $"Custom FOV {simpleNameSuffix}";
@@ -46,7 +54,7 @@ public static class ModpackBuilder
             fileName = $"Custom FOV #{presetId}";
             desc = simpleDescription ?? $"Custom Preset #{presetId}";
         }
-        const string modpackTitle = "Custom FOV";
+        modpackTitle ??= "Custom FOV";
         const string authorDisplayName = "FOV Modpack Builder";
         const string authorActionLink = "https://github.com/avoidmemories/GTA-5-FOV-Modpack-Builder";
         var outPath = UniquePath(Path.Combine(appDir, fileName + extension));
@@ -74,10 +82,11 @@ public static class ModpackBuilder
                     xml = xml.Replace("$FF465FAF", "$FF000000");
                     // The card itself is black, so its title must remain white.
                     xml = xml.Replace("useBlackTextColor=\"True\"", "useBlackTextColor=\"False\"");
-                    xml = Regex.Replace(xml,
-                        "<description><!\\[CDATA\\[.*?\\]\\]></description>",
-                        $"<description><![CDATA[{desc}]]></description>",
-                        RegexOptions.Singleline);
+                    xml = omitDescription
+                        ? Regex.Replace(xml, "\\s*<description><!\\[CDATA\\[.*?\\]\\]></description>",
+                            string.Empty, RegexOptions.Singleline)
+                        : Regex.Replace(xml, "<description><!\\[CDATA\\[.*?\\]\\]></description>",
+                            $"<description><![CDATA[{desc}]]></description>", RegexOptions.Singleline);
                     var bytes = Encoding.UTF8.GetBytes(xml);
                     os.Write(bytes, 0, bytes.Length);
                 }
@@ -116,6 +125,13 @@ public static class ModpackBuilder
 
         return outPath;
     }
+
+    /// <summary>Builds an installable OIV containing the untouched reference
+    /// cameras.ymt. Its filename, package name, and metadata are fixed.</summary>
+    public static string BuildOriginal(string ymtFileName)
+        => Build(new List<FovParam>(), ymtFileName, out _, ".oiv",
+            outputName: "Original FOV", modpackTitle: "Original FOV",
+            omitDescription: true, updateChecksum: false);
 
 
     /// <summary>Returns a path that does not exist yet, appending " (n)".</summary>

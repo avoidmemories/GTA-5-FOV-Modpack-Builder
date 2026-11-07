@@ -54,6 +54,26 @@ public static class Tests
         Console.WriteLine($"FP aim[0] in oiv: {patched} (expect 90)");
         if (Math.Abs(patched - 90) > 0.01f) return 7;
 
+        // The original build must package the untouched reference file, have
+        // the fixed package name, and deliberately omit a description.
+        var originalPath = ModpackBuilder.BuildOriginal("cameras_original.ymt");
+        if (Path.GetFileName(originalPath) != "Original FOV.oiv")
+        { Console.WriteLine("FAIL: original filename"); return 12; }
+        using (var originalZip = ZipFile.OpenRead(originalPath))
+        {
+            var originalEntry = originalZip.GetEntry("content/fov/cameras.ymt");
+            using var originalStream = new MemoryStream();
+            originalEntry!.Open().CopyTo(originalStream);
+            if (!originalStream.ToArray().SequenceEqual(File.ReadAllBytes("cameras_original.ymt")))
+            { Console.WriteLine("FAIL: original cameras.ymt was changed"); return 13; }
+
+            var assemblyEntry = originalZip.GetEntry("assembly.xml");
+            using var reader = new StreamReader(assemblyEntry!.Open());
+            var assemblyXml = reader.ReadToEnd();
+            if (!assemblyXml.Contains("<name>Original FOV</name>") || assemblyXml.Contains("<description>"))
+            { Console.WriteLine("FAIL: original package metadata"); return 14; }
+        }
+
         // checksum verify: recompute and compare
         var copy = (byte[])data.Clone();
         var stored = PsoChecksum.Update(copy);

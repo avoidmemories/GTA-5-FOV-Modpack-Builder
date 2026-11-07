@@ -1064,6 +1064,24 @@ public partial class MainWindow : Window
         }
     }
 
+    /// <summary>Builds the untouched reference cameras.ymt as a named OIV.
+    /// It deliberately ignores all editor, import, preset, and SIMPLE values.</summary>
+    private void BtnBuildOriginal_Click(object sender, RoutedEventArgs e)
+    {
+        ExportPopup.IsOpen = false;
+        try
+        {
+            var path = ModpackBuilder.BuildOriginal(BaseYmtFileName);
+            MoveToExportPath(ref path);
+            BuildDoneEffect(path);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, "Build failed:\n" + ex.Message, "FOV Modpack Builder",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
     private void ExportPopup_Opened(object? sender, EventArgs e)
     {
         // fade the flyout in once positioned
