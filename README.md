@@ -23,7 +23,7 @@ dotnet build ".\FOV Modpack Builder.csproj" -c Release
 
 The compiled application will be located at:
 
-```text
+```
 bin\Release\net10.0-windows\FOV Modpack Builder.exe
 ```
 
