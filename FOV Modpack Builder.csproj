@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>FOV Modpack Builder</AssemblyName>
+    <ApplicationIcon>Assets\Icons\app.ico</ApplicationIcon>
+    <Win32Icon>Assets\Icons\app.ico</Win32Icon>
+    <RootNamespace>FovApp</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="cameras_original.ymt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="fov_registry.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="fov_defaults.json" CopyToOutputDirectory="PreserveNewest" />
+    <Resource Include="Assets\Icons\app.png" />
+    <Resource Include="Assets\Icons\icon.png" />
+    <Content Include="Assets\Templates\oiv_template.zip" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

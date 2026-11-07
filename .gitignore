@@ -1,0 +1,28 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio / Rider / VS Code user state
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test and diagnostic output
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Locally generated modpacks and standalone exports
+Custom FOV*.oiv
+Custom FOV*.zip
+cameras.ymt
+*.before-import.ymt
+
+# Operating-system files
+.DS_Store
+Thumbs.db
