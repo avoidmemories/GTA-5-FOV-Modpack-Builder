@@ -159,6 +159,71 @@
         </Setter>
     </Style>
 
+    <!-- The category list in the left sidebar keeps a comfortable hit area,
+         while its visible thumb is 4.8 px wide (about 2.5× thinner). -->
+    <Style x:Key="CategoryNavigationScrollBar" TargetType="ScrollBar"
+           BasedOn="{StaticResource {x:Type ScrollBar}}">
+        <Setter Property="Width" Value="12" />
+        <Setter Property="MinWidth" Value="12" />
+        <Setter Property="MaxWidth" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Grid Background="Transparent">
+                        <Track x:Name="PART_Track" IsDirectionReversed="True">
+                            <Track.Thumb>
+                                <Thumb>
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Border x:Name="Bar" Width="4.8"
+                                                    HorizontalAlignment="Center"
+                                                    Background="#3F3F3F"
+                                                    CornerRadius="2.4" />
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Bar" Property="Background" Value="#5A5A5A" />
+                                                </Trigger>
+                                                <Trigger Property="IsDragging" Value="True">
+                                                    <Setter TargetName="Bar" Property="Background" Value="#8A8A8A" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CategoryNavigationViewer" TargetType="ScrollViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="12" />
+                        </Grid.ColumnDefinitions>
+                        <ScrollContentPresenter Grid.Column="0"
+                                                Margin="{TemplateBinding Padding}"
+                                                CanContentScroll="False" />
+                        <ScrollBar Grid.Column="1" x:Name="PART_VerticalScrollBar"
+                                   Style="{StaticResource CategoryNavigationScrollBar}"
+                                   Width="12" MinWidth="12" MaxWidth="12"
+                                   Orientation="Vertical"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Value="{TemplateBinding VerticalOffset}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="Viewer" TargetType="ScrollViewer">
         <Setter Property="Template">
             <Setter.Value>
@@ -325,7 +390,7 @@
                                 CornerRadius="1" Margin="0,9" Visibility="Collapsed" />
                         <Border x:Name="Root" Background="{TemplateBinding Background}"
                                 CornerRadius="{StaticResource ControlRadius}"
-                                BorderBrush="Transparent" BorderThickness="1" Padding="12,0">
+                                BorderBrush="Transparent" BorderThickness="1" Padding="12,0,0,0">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="Center" />
                         </Border>

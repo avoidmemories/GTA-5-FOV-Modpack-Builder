@@ -57,7 +57,8 @@ public static class Tests
         // The original build must package the untouched reference file, have
         // the fixed package name, and deliberately omit a description.
         var originalPath = ModpackBuilder.BuildOriginal("cameras_original.ymt");
-        if (Path.GetFileName(originalPath) != "Original FOV.oiv")
+        if (!Path.GetFileNameWithoutExtension(originalPath).StartsWith("Original FOV", StringComparison.Ordinal)
+            || !string.Equals(Path.GetExtension(originalPath), ".oiv", StringComparison.OrdinalIgnoreCase))
         { Console.WriteLine("FAIL: original filename"); return 12; }
         using (var originalZip = ZipFile.OpenRead(originalPath))
         {

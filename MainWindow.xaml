@@ -107,9 +107,10 @@
 
                     <!-- Tabs (name lives in the system title bar) -->
                     <ScrollViewer Grid.Row="2" x:Name="NavScroll"
+                                  Style="{StaticResource CategoryNavigationViewer}"
                                   VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel x:Name="NavHost" Margin="10,4,10,0" />
+                        <StackPanel x:Name="NavHost" Margin="10,4,0,0" />
                     </ScrollViewer>
 
                     <!-- Reset everything: first click arms (label turns red

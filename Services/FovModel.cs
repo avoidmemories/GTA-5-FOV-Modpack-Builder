@@ -127,7 +127,7 @@ public static class FovModel
         { ("camThirdPersonPedAssistedAimCameraMetadata", "BaseFov"), ("Assisted aim", "tp") },
         { ("camThirdPersonPedAssistedAimCameraMetadata", "BaseFovToEmulateWithFocalLengthMultiplier"), ("Assisted aim focal emulation", "tp") },
         { ("camThirdPersonPedMeleeAimCameraMetadata", "BaseFov"), ("Melee aim — third person", "tp") },
-        { ("camFollowParachuteCameraMetadata", "BaseFov"), ("Parachute / freefall", "tp") },
+        { ("camFollowParachuteCameraMetadata", "BaseFov"), ("Parachute / freefall — third person", "tp") },
 
         { ("camFollowVehicleCameraMetadata", "BaseFov"), ("In vehicle — third person (follow)", "veh") },
         { ("camFollowVehicleCameraMetadata", "MinSafeOrbitDistanceScalingForExtensions"), ("Safe distance scale", "distance") },
@@ -143,6 +143,13 @@ public static class FovModel
 
         { ("camCinematicMountedCameraMetadata", "BaseFov"), ("Mounted vehicle camera", "mfp") },
         { ("camCinematicMountedCameraMetadata", "FoVOffsetForDriveby"), ("Mounted driveby offset", "cine") },
+
+        { ("camFollowPedCameraMetadata", "MinSafeOrbitDistanceScalingForExtensions"), ("Safe distance scale", "ped_distance") },
+        { ("camFollowPedCameraMetadata", "CustomOrbitDistanceLimitsToForce_Min"), ("Forced distance — min", "ped_distance") },
+        { ("camFollowPedCameraMetadata", "CustomOrbitDistanceLimitsToForce_Max"), ("Forced distance — max", "ped_distance") },
+        { ("camFollowPedCameraMetadata", "OrbitDistanceLimitSpringConstant"), ("Distance limit smoothing", "ped_distance") },
+        { ("camFollowPedCameraMetadata", "OrbitDistanceLimitsForBasePosition_Min"), ("Base distance — min", "ped_distance") },
+        { ("camFollowPedCameraMetadata", "OrbitDistanceLimitsForBasePosition_Max"), ("Base distance — max", "ped_distance") },
 
         { ("camCinematicPedCloseUpCameraMetadata", "BaseFov"), ("Ped close-up", "cine") },
         { ("camCinematicTwoShotCameraMetadata", "BaseFov"), ("Cinematic two-shot", "cine") },
@@ -206,12 +213,13 @@ public static class FovModel
         ("tp", "THIRD PERSON — ON FOOT"),
         ("veh", "VEHICLES"),
         ("mfp", "FIRST PERSON — IN VEHICLE"),
+        ("ped_distance", "ON-FOOT CAMERA DISTANCE"),
+        ("distance", "VEHICLE CAMERA DISTANCE"),
         ("cine", "CINEMATIC / GAMEPLAY MOMENTS"),
         ("zoom", "CINEMATIC ZOOM RANGES"),
         ("dyn", "FOV DYNAMICS (scaling, speeds)"),
         ("blur", "ZOOM MOTION BLUR"),
         ("misc", "SPLINE / MISC"),
-        ("distance", "VEHICLE CAMERA DISTANCE"),
     };
 
     /// <summary>Long-form help shown on hover. Labels stay compact so rows do
@@ -240,6 +248,18 @@ public static class FovModel
             "Base field of view for the ordinary third-person on-foot follow camera.",
         ("camFollowVehicleCameraMetadata", "BaseFov") =>
             "Base field of view for the ordinary third-person vehicle follow camera.",
+        ("camFollowPedCameraMetadata", "MinSafeOrbitDistanceScalingForExtensions") =>
+            "Scale used when calculating the minimum safe camera distance around a pedestrian and nearby geometry. Increasing it can keep the third-person camera slightly farther from the character in constrained spaces.",
+        ("camFollowPedCameraMetadata", "CustomOrbitDistanceLimitsToForce_Min") =>
+            "Lower endpoint of the forced on-foot camera-distance range. The original value is -1, which means no custom range is forced. Set this together with Forced distance — max.",
+        ("camFollowPedCameraMetadata", "CustomOrbitDistanceLimitsToForce_Max") =>
+            "Upper endpoint of the forced on-foot camera-distance range. The original value is -1, which means no custom range is forced. A larger value can keep the third-person camera farther from the character.",
+        ("camFollowPedCameraMetadata", "OrbitDistanceLimitSpringConstant") =>
+            "How firmly and quickly the on-foot camera moves toward its permitted distance. This changes smoothing, not the maximum distance by itself.",
+        ("camFollowPedCameraMetadata", "OrbitDistanceLimitsForBasePosition_Min") =>
+            "Minimum normal orbit distance from the character for the third-person follow camera.",
+        ("camFollowPedCameraMetadata", "OrbitDistanceLimitsForBasePosition_Max") =>
+            "Maximum normal orbit distance from the character for the third-person follow camera. Increase this to allow the camera to move farther back.",
         ("camFollowVehicleCameraMetadata", "MinSafeOrbitDistanceScalingForExtensions") =>
             "Scale used when calculating the minimum safe camera distance around vehicle extensions, trailers, and unusual bodywork. It can make the camera keep a larger clearance from the vehicle.",
         ("camFollowVehicleCameraMetadata", "CustomOrbitDistanceLimitsToForce_Min") =>

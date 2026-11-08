@@ -61,7 +61,7 @@ bin\Release\net10.0-windows\FOV Modpack Builder.exe
 | Assisted aim | `camThirdPersonPedAssistedAimCameraMetadata / BaseFov` | FOV of the assisted-aim profile. Its use depends on the aiming mode and situation. |
 | Assisted aim focal emulation | `camThirdPersonPedAssistedAimCameraMetadata / BaseFovToEmulateWithFocalLengthMultiplier` | Focal-length reference for assisted aim. |
 | Melee aim — third person | `camThirdPersonPedMeleeAimCameraMetadata / BaseFov` | Third-person camera FOV in the melee-aim context. |
-| Parachute / freefall | `camFollowParachuteCameraMetadata / BaseFov` | Base FOV of the follow camera while parachuting and free-falling. |
+| Parachute / freefall — third person | `camFollowParachuteCameraMetadata / BaseFov` | Base FOV of the third-person follow camera while parachuting and free-falling. |
 
 ### Vehicles and first person in vehicle
 
@@ -151,6 +151,19 @@ General rule: a `wide FOV` is a wider, less zoomed-in shot; a `close FOV` is a c
 | FP head track: blur threshold (min) | `camFirstPersonHeadTrackingAimCameraMetadata / ZoomMotionBlurMinFovDelta` | Lower blur threshold while changing the head-tracking aim-camera FOV. |
 | FP head track: blur threshold (max) | `camFirstPersonHeadTrackingAimCameraMetadata / ZoomMotionBlurMaxFovDelta` | Upper blur threshold while changing the head-tracking aim-camera FOV. |
 | FP head track: max blur strength | `camFirstPersonHeadTrackingAimCameraMetadata / ZoomMotionBlurMaxStrengthForFov` | Maximum blur strength for the head-tracking aim camera. |
+
+### On-foot camera distance
+
+Controls the third-person follow-camera distance from the character. `Forced distance` and `Base distance` are ranges, so keep each minimum less than or equal to its matching maximum. The original `Forced distance` values are `-1`, meaning that the game does not force a custom range.
+
+| Name in the app | Type / field | Description |
+|---|---|---|
+| Safe distance scale | `camFollowPedCameraMetadata / MinSafeOrbitDistanceScalingForExtensions` | Scales the safe on-foot camera distance around the character and nearby geometry. |
+| Forced distance — min | `camFollowPedCameraMetadata / CustomOrbitDistanceLimitsToForce` (minimum) | Lower endpoint of a forced on-foot camera-distance range. Set together with its maximum. |
+| Forced distance — max | `camFollowPedCameraMetadata / CustomOrbitDistanceLimitsToForce` (maximum) | Upper endpoint of a forced on-foot camera-distance range. A larger value can keep the camera farther from the character. |
+| Distance limit smoothing | `camFollowPedCameraMetadata / OrbitDistanceLimitSpringConstant` | Controls how firmly and quickly the on-foot camera moves toward its permitted distance. |
+| Base distance — min | `camFollowPedCameraMetadata / OrbitDistanceLimitsForBasePosition` (minimum) | Minimum normal orbit distance from the character. |
+| Base distance — max | `camFollowPedCameraMetadata / OrbitDistanceLimitsForBasePosition` (maximum) | Maximum normal orbit distance from the character. Increase this to allow the camera to move farther back. |
 
 ### Vehicle camera distance
 

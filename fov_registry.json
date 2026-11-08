@@ -17,7 +17,7 @@
   {"type": "camInconsistentBehaviourZoomHelperMetadata", "stride": 184, "count": 2, "off": 418192, "fields": [{"name": "MaxFov", "off": 20}]},
   {"type": "camReplayPresetCameraMetadata", "stride": 256, "count": 5, "off": 418560, "fields": [{"name": "MinFov", "off": 152}, {"name": "MaxFov", "off": 156}, {"name": "DefaultFov", "off": 160}]},
   {"type": "camFirstPersonPedAimCameraMetadata", "stride": 208, "count": 9, "off": 420080, "fields": [{"name": "BaseFov", "off": 36}, {"name": "ZoomMotionBlurMinFovDelta", "off": 52}, {"name": "ZoomMotionBlurMaxFovDelta", "off": 56}, {"name": "ZoomMotionBlurMaxStrengthForFov", "off": 60}]},
-  {"type": "camFollowPedCameraMetadata", "stride": 2320, "count": 18, "off": 422992, "fields": [{"name": "BaseFov", "off": 48}]},
+  {"type": "camFollowPedCameraMetadata", "stride": 2320, "count": 18, "off": 422992, "fields": [{"name": "BaseFov", "off": 48}, {"name": "MinSafeOrbitDistanceScalingForExtensions", "off": 400}, {"name": "CustomOrbitDistanceLimitsToForce_Min", "off": 408}, {"name": "CustomOrbitDistanceLimitsToForce_Max", "off": 412}, {"name": "OrbitDistanceLimitSpringConstant", "off": 416}, {"name": "OrbitDistanceLimitsForBasePosition_Min", "off": 704}, {"name": "OrbitDistanceLimitsForBasePosition_Max", "off": 708}]},
   {"type": "camCinematicMountedPartCameraMetadata", "stride": 192, "count": 50, "off": 464752, "fields": [{"name": "BaseFov", "off": 40}]},
   {"type": "camThirdPersonVehicleAimCameraMetadata", "stride": 928, "count": 36, "off": 479856, "fields": [{"name": "BaseFov", "off": 48}, {"name": "BaseFovToEmulateWithFocalLengthMultiplier", "off": 892}]},
   {"type": "camHintHelperMetadata", "stride": 88, "count": 18, "off": 513264, "fields": [{"name": "FovScalar", "off": 16}]},

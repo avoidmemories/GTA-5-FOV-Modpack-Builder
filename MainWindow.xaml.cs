@@ -285,11 +285,13 @@ public partial class MainWindow : Window
             _simpleSelections["In vehicle"] = sel;
             stack.Children.Add(makeSlider("In vehicle", () => sel, cur));
         }
-        // Third person on foot: follow-ped camera + third person aim base.
+        // Third person on foot: follow-ped, aim, and parachute/freefall
+        // follow cameras share the one SIMPLE master value.
         {
             var sel = _parameters.Where(p =>
                 (p.Type == "camFollowPedCameraMetadata" && p.Field == "BaseFov")
-                || (p.Type == "camThirdPersonPedAimCameraMetadata" && p.Field == "BaseFov")).ToList();
+                || (p.Type == "camThirdPersonPedAimCameraMetadata" && p.Field == "BaseFov")
+                || (p.Type == "camFollowParachuteCameraMetadata" && p.Field == "BaseFov")).ToList();
             var cur = sel.Select(p => _simpleShifts.GetValueOrDefault((p.Type, p.Field))).FirstOrDefault();
             _simpleSelections["Third person"] = sel;
             stack.Children.Add(makeSlider("Third person", () => sel, cur));
@@ -1258,6 +1260,11 @@ public partial class MainWindow : Window
 
             var imported = FovModel.LoadValuesOnly(data, _parameters);
             ApplyImported(imported);
+            // Imported values are most useful when all affected fields are
+            // immediately visible, rather than hidden behind SIMPLE's three
+            // master controls.
+            ModeAdvanced.IsChecked = true;
+            SetSimpleMode(false);
             FlashStatusQuiet("Imported cameras.ymt");
         }
         catch (Exception ex)
