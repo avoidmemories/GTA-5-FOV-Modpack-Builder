@@ -16,7 +16,9 @@
         FontFamily="Segoe UI"
         SourceInitialized="Window_SourceInitialized">
 
-    <Border CornerRadius="{StaticResource WindowRadius}"
+    <!-- The native title bar already rounds the top of the window.  Keep the
+         client surface square there, while retaining the rounded bottom edge. -->
+    <Border CornerRadius="0,0,8,8"
             Background="{StaticResource WindowBrush}"
             BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1"
             ClipToBounds="True" Margin="0,0,0,0">
